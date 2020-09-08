@@ -30,7 +30,7 @@
 <meta property="og:description" content="学习回调机制！">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-08T10:49:50.000Z">
-<meta property="article:modified_time" content="2020-09-08T11:56:09.052Z">
+<meta property="article:modified_time" content="2020-09-08T12:02:17.946Z">
 <meta property="article:author" content="Joae">
 <meta name="twitter:card" content="summary">
 
@@ -272,7 +272,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-09-08 18:49:50 / 修改时间：19:56:09" itemprop="dateCreated datePublished" datetime="2020-09-08T18:49:50+08:00">2020-09-08</time>
+              <time title="创建时间：2020-09-08 18:49:50 / 修改时间：20:02:17" itemprop="dateCreated datePublished" datetime="2020-09-08T18:49:50+08:00">2020-09-08</time>
             </span>
 
           
@@ -289,58 +289,7 @@
 <h1 id="回调种类"><a href="#回调种类" class="headerlink" title="回调种类"></a>回调种类</h1><h2 id="同步回调"><a href="#同步回调" class="headerlink" title="同步回调"></a>同步回调</h2><p>类A的a()方法调用类B的b()方法，一直等待b()方法执行完毕，a()方法继续往下走。</p>
 <h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><p>解决同步回调可能出现阻塞。<br>类A的方法a()通过新线程的方式调用类B的方法b()，a()代码接着继续执行下去，无论方法b()执行多久，都不会阻塞方法a()的执行。<br>由于方法a()不等待b()的执行完成，方法a()需要方法b()执行结果的情况下，需要对方法b()的执行结果进行监听。<br>Future+Callable<br>CyclicBarrier<br>Callable、Future和FutureTask </p>
 <h3 id="回调实例：Tom做题"><a href="#回调实例：Tom做题" class="headerlink" title="回调实例：Tom做题"></a>回调实例：Tom做题</h3><p>数学老师让Tom做一道题，并且Tom做题期间数学老师不用盯着Tom，而是在玩手机，等Tom把题目做完后再把答案告诉老师。</p>
-<p>···<br> public interface CallBack {<br>        void tellAnswer(int res);<br>    }</p>
-<pre><code>public class Teacher implements CallBack &#123;
-    private Student student;
-
-    Teacher(Student student) &#123;
-        this.student = student;
-    &#125;
-
-    void askProblem(Student student, Teacher teacher) &#123;</code></pre>
-<p>//main方法是主线程运行，为了实现异步回调，这里开启一个线程来操作<br>            new Thread(new Runnable() {<br>                @Override<br>                public void run() {<br>                    student.resolveProblem(teacher);<br>                }<br>            }).start();</p>
-<p>//老师让学生做题以后，等待学生回答的这段时间，可以做别的事，比如玩手机.<br>//而不需要同步等待，这就是回调的好处。<br>//当然你可以说开启一个线程让学生做题就行了，但是这样无法让学生通知老师。<br>//需要另外的机制去实现通知过程。<br>// 当然，多线程中的future和callable也可以实现数据获取的功能。<br>            for (int i = 1; i &lt; 4; i++) {<br>                System.out.println(“等学生回答问题的时候老师玩了 “ + i + “秒的手机”);</p>
-<pre><code>        &#125;
-
-    &#125;
-
-    @Override
-    public void tellAnswer(int res) &#123;
-        System.out.println(&quot;the answer is &quot; + res);
-    &#125;
-
-&#125;</code></pre>
-<p>//学生的接口，解决问题的方法中要传入老师的引用，否则无法完成对具体实例的回调。<br>//写为接口的好处就是，很多个学生都可以实现这个接口，并且老师在提问题时可以通过传入List<Student>来聚合学生，十分方便。</p>
-<pre><code>public interface Student &#123;
-    void resolveProblem(Teacher teacher);
-&#125;
-
-
-public class Tom implements Student &#123;
-    @Override
-    public void resolveProblem(Teacher teacher) &#123;
-        try &#123;</code></pre>
-<p>//学生思考了3秒后得到了答案，通过老师提供的回调方法告诉老师。<br>                Thread.sleep(3000);<br>                System.out.println(“work out”);<br>                teacher.tellAnswer(111);<br>            } catch (InterruptedException e) {<br>                e.printStackTrace();</p>
-<pre><code>        &#125;
-    &#125;
-&#125;
-
-public class Test &#123;
-    public static void main(String[] args) &#123;
-        //测试
-        Student tom = new Tom();
-        Teacher lee = new Teacher(tom);
-        lee.askProblem(tom, lee);
-        //结果</code></pre>
-<p>//        等学生回答问题的时候老师玩了 1秒的手机</p>
-<p>//        等学生回答问题的时候老师玩了 2秒的手机</p>
-<p>//        等学生回答问题的时候老师玩了 3秒的手机</p>
-<p>//        work out</p>
-<p>//        the answer is 111</p>
-<pre><code>    &#125;
-
-&#125;</code></pre>
-<p>···</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"> public interface CallBack &#123;</span><br><span class="line">        void tellAnswer(int res);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public class Teacher implements CallBack &#123;</span><br><span class="line">        private Student student;</span><br><span class="line"></span><br><span class="line">        Teacher(Student student) &#123;</span><br><span class="line">            this.student &#x3D; student;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        void askProblem(Student student, Teacher teacher) &#123;</span><br><span class="line">&#x2F;&#x2F;main方法是主线程运行，为了实现异步回调，这里开启一个线程来操作</span><br><span class="line">            new Thread(new Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    student.resolveProblem(teacher);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;老师让学生做题以后，等待学生回答的这段时间，可以做别的事，比如玩手机.</span><br><span class="line">&#x2F;&#x2F;而不需要同步等待，这就是回调的好处。</span><br><span class="line">&#x2F;&#x2F;当然你可以说开启一个线程让学生做题就行了，但是这样无法让学生通知老师。</span><br><span class="line">&#x2F;&#x2F;需要另外的机制去实现通知过程。</span><br><span class="line">&#x2F;&#x2F; 当然，多线程中的future和callable也可以实现数据获取的功能。</span><br><span class="line">            for (int i &#x3D; 1; i &lt; 4; i++) &#123;</span><br><span class="line">                System.out.println(&quot;等学生回答问题的时候老师玩了 &quot; + i + &quot;秒的手机&quot;);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void tellAnswer(int res) &#123;</span><br><span class="line">            System.out.println(&quot;the answer is &quot; + res);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;学生的接口，解决问题的方法中要传入老师的引用，否则无法完成对具体实例的回调。</span><br><span class="line">&#x2F;&#x2F;写为接口的好处就是，很多个学生都可以实现这个接口，并且老师在提问题时可以通过传入List&lt;Student&gt;来聚合学生，十分方便。</span><br><span class="line"></span><br><span class="line">    public interface Student &#123;</span><br><span class="line">        void resolveProblem(Teacher teacher);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public class Tom implements Student &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void resolveProblem(Teacher teacher) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">&#x2F;&#x2F;学生思考了3秒后得到了答案，通过老师提供的回调方法告诉老师。</span><br><span class="line">                Thread.sleep(3000);</span><br><span class="line">                System.out.println(&quot;work out&quot;);</span><br><span class="line">                teacher.tellAnswer(111);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public class Test &#123;</span><br><span class="line">        public static void main(String[] args) &#123;</span><br><span class="line">            &#x2F;&#x2F;测试</span><br><span class="line">            Student tom &#x3D; new Tom();</span><br><span class="line">            Teacher lee &#x3D; new Teacher(tom);</span><br><span class="line">            lee.askProblem(tom, lee);</span><br><span class="line">            </span><br><span class="line">            &#x2F;&#x2F;结果</span><br><span class="line">&#x2F;&#x2F;        等学生回答问题的时候老师玩了 1秒的手机</span><br><span class="line">&#x2F;&#x2F;        等学生回答问题的时候老师玩了 2秒的手机</span><br><span class="line">&#x2F;&#x2F;        等学生回答问题的时候老师玩了 3秒的手机</span><br><span class="line">&#x2F;&#x2F;        work out</span><br><span class="line">&#x2F;&#x2F;        the answer is 111</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
