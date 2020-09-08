@@ -22,21 +22,19 @@
     var CONFIG = {"hostname":"geil520.github.io","root":"/geil520.github.io/","scheme":"Pisces","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
   </script>
 
-  <meta name="description" content="Hello Hexo！">
+  <meta name="description" content="运行时数据区所有线程共享方法区堆线程隔离虚拟机栈本地方法栈程序计数器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode代码详解">
-<meta property="og:url" content="https://geil520.github.io/blog/2020/08/26/%E4%BB%A3%E7%A0%81%E4%B8%8A%E5%88%86/index.html">
+<meta property="og:title" content="自动内存管理">
+<meta property="og:url" content="https://geil520.github.io/blog/2020/09/01/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="Joae">
-<meta property="og:description" content="Hello Hexo！">
+<meta property="og:description" content="运行时数据区所有线程共享方法区堆线程隔离虚拟机栈本地方法栈程序计数器">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-26T03:46:50.000Z">
-<meta property="article:modified_time" content="2020-08-27T13:05:24.332Z">
+<meta property="article:published_time" content="2020-09-01T07:11:59.000Z">
+<meta property="article:modified_time" content="2020-09-01T10:32:13.005Z">
 <meta property="article:author" content="Joae">
-<meta property="article:tag" content="导航">
-<meta property="article:tag" content="分享">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://geil520.github.io/blog/2020/08/26/%E4%BB%A3%E7%A0%81%E4%B8%8A%E5%88%86/">
+<link rel="canonical" href="https://geil520.github.io/blog/2020/09/01/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
 
 <script class="page-configurations">
@@ -49,7 +47,7 @@
   };
 </script>
 
-  <title>LeetCode代码详解 | Joae</title>
+  <title>自动内存管理 | Joae</title>
   
 
 
@@ -177,7 +175,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LeetCode%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">LeetCode代码详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">1.1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">排序</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="nav-number">1.</span> <span class="nav-text">运行时数据区</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB"><span class="nav-number">1.1.</span> <span class="nav-text">所有线程共享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="nav-number">1.1.1.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">堆</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%9A%94%E7%A6%BB"><span class="nav-number">1.2.</span> <span class="nav-text">线程隔离</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="nav-number">1.2.1.</span> <span class="nav-text">虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-number">1.2.2.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">程序计数器</span></a></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -248,7 +246,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://geil520.github.io/blog/2020/08/26/%E4%BB%A3%E7%A0%81%E4%B8%8A%E5%88%86/">
+    <link itemprop="mainEntityOfPage" href="https://geil520.github.io/blog/2020/09/01/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/geil520.github.io/images/20160907072319_ZrGze.jpg">
@@ -263,7 +261,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          LeetCode代码详解
+          自动内存管理
         </h1>
 
         <div class="post-meta">
@@ -272,28 +270,12 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-08-26 11:46:50" itemprop="dateCreated datePublished" datetime="2020-08-26T11:46:50+08:00">2020-08-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-27 21:05:24" itemprop="dateModified" datetime="2020-08-27T21:05:24+08:00">2020-08-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/geil520.github.io/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
-                </span>
+              <time title="创建时间：2020-09-01 15:11:59 / 修改时间：18:32:13" itemprop="dateCreated datePublished" datetime="2020-09-01T15:11:59+08:00">2020-09-01</time>
             </span>
 
           
-            <div class="post-description">Hello Hexo！</div>
 
         </div>
       </header>
@@ -302,28 +284,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <a id="more"></a>
-<h1 id="LeetCode代码详解"><a href="#LeetCode代码详解" class="headerlink" title="LeetCode代码详解"></a>LeetCode代码详解</h1><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><ul>
-<li><p>冒泡排序</p>
-</li>
-<li><p>快速排序</p>
-</li>
-</ul>
-<p>##链表</p>
-<ul>
-<li>列表1</li>
-<li>列表2<br>a 子列表<br>b 子列表</li>
-</ul>
-<hr>
-<hr>
-<p><a target="_blank" rel="noopener" href="http://www.baidu.com/">lala</a></p>
-<p><img src="" alt="lala"></p>
-<p><em>字体是斜线哦</em><br><strong>字体是加粗</strong><br><code>&lt;html&gt;&lt;/html&gt;</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">         &lt;title&gt;我是标题哦&lt;&#x2F;title&gt;</span><br><span class="line">    &lt;&#x2F;head&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>我的内容是引用</p>
-</blockquote>
-
+        <h1 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h1><h2 id="所有线程共享"><a href="#所有线程共享" class="headerlink" title="所有线程共享"></a>所有线程共享</h2><h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><h2 id="线程隔离"><a href="#线程隔离" class="headerlink" title="线程隔离"></a>线程隔离</h2><h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h3><h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3>
     </div>
 
     
@@ -346,20 +307,19 @@
 
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/geil520.github.io/tags/%E5%AF%BC%E8%88%AA/" rel="tag"># 导航</a>
-              <a href="/geil520.github.io/tags/%E5%88%86%E4%BA%AB/" rel="tag"># 分享</a>
-          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/geil520.github.io/2020/08/26/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="next" title="Java多线程">
-      Java多线程 <i class="fa fa-chevron-right"></i>
+    <a href="/geil520.github.io/2020/09/01/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%8A%80%E6%9C%AF/" rel="prev" title="线程池技术">
+      <i class="fa fa-chevron-left"></i> 线程池技术
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/geil520.github.io/2020/09/08/java-%E5%9B%9E%E8%B0%83/" rel="next" title="java_回调">
+      java_回调 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

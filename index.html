@@ -186,7 +186,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/geil520.github.io/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -199,7 +199,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/geil520.github.io/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -240,6 +240,178 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://geil520.github.io/blog/2020/09/08/java-%E5%9B%9E%E8%B0%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/geil520.github.io/images/20160907072319_ZrGze.jpg">
+      <meta itemprop="name" content="Joae">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Joae">
+    </span>
+
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/geil520.github.io/2020/09/08/java-%E5%9B%9E%E8%B0%83/" class="post-title-link" itemprop="url">java_回调</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-08 18:49:50 / 修改时间：19:53:20" itemprop="dateCreated datePublished" datetime="2020-09-08T18:49:50+08:00">2020-09-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="回调思想"><a href="#回调思想" class="headerlink" title="回调思想"></a>回调思想</h1><p>类A的a()方法调用类B的b()方法<br>类B的b()方法执行完毕主动调用类A的callback()方法</p>
+<h1 id="回调种类"><a href="#回调种类" class="headerlink" title="回调种类"></a>回调种类</h1><h2 id="同步回调"><a href="#同步回调" class="headerlink" title="同步回调"></a>同步回调</h2><p>类A的a()方法调用类B的b()方法，一直等待b()方法执行完毕，a()方法继续往下走。</p>
+<h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><p>解决同步回调可能出现阻塞。<br>类A的方法a()通过新线程的方式调用类B的方法b()，a()代码接着继续执行下去，无论方法b()执行多久，都不会阻塞方法a()的执行。<br>由于方法a()不等待b()的执行完成，方法a()需要方法b()执行结果的情况下，需要对方法b()的执行结果进行监听。<br>Future+Callable<br>CyclicBarrier<br>Callable、Future和FutureTask </p>
+<h3 id="回调实例：Tom做题"><a href="#回调实例：Tom做题" class="headerlink" title="回调实例：Tom做题"></a>回调实例：Tom做题</h3><p>数学老师让Tom做一道题，并且Tom做题期间数学老师不用盯着Tom，而是在玩手机，等Tom把题目做完后再把答案告诉老师。</p>
+<p>···<br> public interface CallBack {<br>        void tellAnswer(int res);<br>    }</p>
+<pre><code>public class Teacher implements CallBack &#123;
+    private Student student;
+
+    Teacher(Student student) &#123;
+        this.student = student;
+    &#125;
+
+    void askProblem(Student student, Teacher teacher) &#123;</code></pre>
+<p>//main方法是主线程运行，为了实现异步回调，这里开启一个线程来操作<br>            new Thread(new Runnable() {<br>                @Override<br>                public void run() {<br>                    student.resolveProblem(teacher);<br>                }<br>            }).start();</p>
+<p>//老师让学生做题以后，等待学生回答的这段时间，可以做别的事，比如玩手机.<br>//而不需要同步等待，这就是回调的好处。<br>//当然你可以说开启一个线程让学生做题就行了，但是这样无法让学生通知老师。<br>//需要另外的机制去实现通知过程。<br>// 当然，多线程中的future和callable也可以实现数据获取的功能。<br>            for (int i = 1; i &lt; 4; i++) {<br>                System.out.println(“等学生回答问题的时候老师玩了 “ + i + “秒的手机”);</p>
+<pre><code>        &#125;
+
+    &#125;
+
+    @Override
+    public void tellAnswer(int res) &#123;
+        System.out.println(&quot;the answer is &quot; + res);
+    &#125;
+
+&#125;</code></pre>
+<p>//学生的接口，解决问题的方法中要传入老师的引用，否则无法完成对具体实例的回调。<br>//写为接口的好处就是，很多个学生都可以实现这个接口，并且老师在提问题时可以通过传入List<Student>来聚合学生，十分方便。</p>
+<pre><code>public interface Student &#123;
+    void resolveProblem(Teacher teacher);
+&#125;
+
+
+public class Tom implements Student &#123;
+    @Override
+    public void resolveProblem(Teacher teacher) &#123;
+        try &#123;</code></pre>
+<p>//学生思考了3秒后得到了答案，通过老师提供的回调方法告诉老师。<br>                Thread.sleep(3000);<br>                System.out.println(“work out”);<br>                teacher.tellAnswer(111);<br>            } catch (InterruptedException e) {<br>                e.printStackTrace();</p>
+<pre><code>        &#125;
+    &#125;
+&#125;
+
+public class Test &#123;
+    public static void main(String[] args) &#123;
+        //测试
+        Student tom = new Tom();
+        Teacher lee = new Teacher(tom);
+        lee.askProblem(tom, lee);
+        //结果</code></pre>
+<p>//        等学生回答问题的时候老师玩了 1秒的手机</p>
+<p>//        等学生回答问题的时候老师玩了 2秒的手机</p>
+<p>//        等学生回答问题的时候老师玩了 3秒的手机</p>
+<p>//        work out</p>
+<p>//        the answer is 111</p>
+<pre><code>    &#125;
+
+&#125;</code></pre>
+<p>···</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://geil520.github.io/blog/2020/09/01/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/geil520.github.io/images/20160907072319_ZrGze.jpg">
+      <meta itemprop="name" content="Joae">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Joae">
+    </span>
+
+    
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/geil520.github.io/2020/09/01/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">自动内存管理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-01 15:11:59 / 修改时间：18:32:13" itemprop="dateCreated datePublished" datetime="2020-09-01T15:11:59+08:00">2020-09-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h1><h2 id="所有线程共享"><a href="#所有线程共享" class="headerlink" title="所有线程共享"></a>所有线程共享</h2><h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><h2 id="线程隔离"><a href="#线程隔离" class="headerlink" title="线程隔离"></a>线程隔离</h2><h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h3><h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://geil520.github.io/blog/2020/09/01/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%8A%80%E6%9C%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -267,7 +439,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-09-01 11:08:17 / 修改时间：11:13:36" itemprop="dateCreated datePublished" datetime="2020-09-01T11:08:17+08:00">2020-09-01</time>
+              <time title="创建时间：2020-09-01 11:08:17 / 修改时间：15:08:24" itemprop="dateCreated datePublished" datetime="2020-09-01T11:08:17+08:00">2020-09-01</time>
             </span>
 
           
