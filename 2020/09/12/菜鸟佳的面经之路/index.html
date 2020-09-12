@@ -22,19 +22,19 @@
     var CONFIG = {"hostname":"geil520.github.io","root":"/geil520.github.io/","scheme":"Pisces","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
   </script>
 
-  <meta name="description" content="又是解决一个bug的一天，嘻嘻嘻！！！">
+  <meta name="description" content="记录政采云一面！我为这个面试官疯狂打call">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发容器及框架">
-<meta property="og:url" content="https://geil520.github.io/blog/2020/08/27/%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%E5%8F%8A%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:title" content="菜鸟佳的面经之路">
+<meta property="og:url" content="https://geil520.github.io/blog/2020/09/12/%E8%8F%9C%E9%B8%9F%E4%BD%B3%E7%9A%84%E9%9D%A2%E7%BB%8F%E4%B9%8B%E8%B7%AF/index.html">
 <meta property="og:site_name" content="Joae">
-<meta property="og:description" content="又是解决一个bug的一天，嘻嘻嘻！！！">
+<meta property="og:description" content="记录政采云一面！我为这个面试官疯狂打call">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-27T13:34:30.000Z">
-<meta property="article:modified_time" content="2020-08-29T10:45:27.572Z">
+<meta property="article:published_time" content="2020-09-12T05:46:11.000Z">
+<meta property="article:modified_time" content="2020-09-12T06:12:12.011Z">
 <meta property="article:author" content="Joae">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://geil520.github.io/blog/2020/08/27/%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%E5%8F%8A%E6%A1%86%E6%9E%B6/">
+<link rel="canonical" href="https://geil520.github.io/blog/2020/09/12/%E8%8F%9C%E9%B8%9F%E4%BD%B3%E7%9A%84%E9%9D%A2%E7%BB%8F%E4%B9%8B%E8%B7%AF/">
 
 
 <script class="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>并发容器及框架 | Joae</title>
+  <title>菜鸟佳的面经之路 | Joae</title>
   
 
 
@@ -175,7 +175,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.1.</span> <span class="nav-text">使用的原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">HashMap线程不安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashTable%E6%95%88%E7%8E%87%E4%BD%8E%E4%B8%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">HashTable效率低下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%99%E4%B8%AA%E9%9B%86%E5%90%88%E7%9A%84%E9%94%81%E5%88%86%E6%AE%B5%E7%9A%84%E6%8A%80%E6%9C%AF%E6%8F%90%E9%AB%98%E5%B9%B6%E5%8F%91%E7%9A%84%E8%AE%BF%E9%97%AE%E7%8E%87"><span class="nav-number">1.1.3.</span> <span class="nav-text">这个集合的锁分段的技术提高并发的访问率</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ConcurrentLinkedQueue-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%98%9F%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentLinkedQueue 线程安全队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E9%98%BB%E5%A1%9E%EF%BC%9A%E5%BE%AA%E7%8E%AFCAS"><span class="nav-number">2.1.</span> <span class="nav-text">非阻塞：循环CAS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">阻塞队列</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%BF%E9%87%87%E4%BA%91"><span class="nav-number">1.</span> <span class="nav-text">政采云</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -246,7 +246,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://geil520.github.io/blog/2020/08/27/%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%E5%8F%8A%E6%A1%86%E6%9E%B6/">
+    <link itemprop="mainEntityOfPage" href="https://geil520.github.io/blog/2020/09/12/%E8%8F%9C%E9%B8%9F%E4%BD%B3%E7%9A%84%E9%9D%A2%E7%BB%8F%E4%B9%8B%E8%B7%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/geil520.github.io/images/20160907072319_ZrGze.jpg">
@@ -261,7 +261,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          并发容器及框架
+          菜鸟佳的面经之路
         </h1>
 
         <div class="post-meta">
@@ -270,19 +270,13 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-08-27 21:34:30" itemprop="dateCreated datePublished" datetime="2020-08-27T21:34:30+08:00">2020-08-27</time>
+              <time title="创建时间：2020-09-12 13:46:11 / 修改时间：14:12:12" itemprop="dateCreated datePublished" datetime="2020-09-12T13:46:11+08:00">2020-09-12</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-29 18:45:27" itemprop="dateModified" datetime="2020-08-29T18:45:27+08:00">2020-08-29</time>
-              </span>
 
           
-            <div class="post-description">又是解决一个bug的一天，嘻嘻嘻！！！</div>
+            <div class="post-description">记录政采云一面！我为这个面试官疯狂打call</div>
 
         </div>
       </header>
@@ -291,14 +285,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h1><h2 id="使用的原因"><a href="#使用的原因" class="headerlink" title="使用的原因"></a>使用的原因</h2><h3 id="HashMap线程不安全"><a href="#HashMap线程不安全" class="headerlink" title="HashMap线程不安全"></a>HashMap线程不安全</h3><p> 多线程下，HashMap的Entry链表会形成环形数据结构，Entry的next节点永远不为空，获取Entry就会产生死循环</p>
-<h3 id="HashTable效率低下"><a href="#HashTable效率低下" class="headerlink" title="HashTable效率低下"></a>HashTable效率低下</h3><p> 使用synchronized保证线程安全，一个线程已经访问，其他线程也访问的时候会被阻塞或者轮询。线程竞争越激烈效率越低<br> 本质：所有的线程在竞争同一把锁</p>
-<h3 id="这个集合的锁分段的技术提高并发的访问率"><a href="#这个集合的锁分段的技术提高并发的访问率" class="headerlink" title="这个集合的锁分段的技术提高并发的访问率"></a>这个集合的锁分段的技术提高并发的访问率</h3><p> 锁分段技术：把数据分成一段一段的进行存储<br>             给每一段数据配一把锁<br>             当一个线程占用锁访问一段数据<br>             其他的段可以同时被其他的线程访问，而不会阻塞。</p>
-<a id="more"></a>
-<h1 id="ConcurrentLinkedQueue-线程安全队列"><a href="#ConcurrentLinkedQueue-线程安全队列" class="headerlink" title="ConcurrentLinkedQueue 线程安全队列"></a>ConcurrentLinkedQueue 线程安全队列</h1><h2 id="非阻塞：循环CAS"><a href="#非阻塞：循环CAS" class="headerlink" title="非阻塞：循环CAS"></a>非阻塞：循环CAS</h2><p>基于链接节点的无界线程安全队列<br>采用FIFO：添加元素，添加到队列尾部（入队列获取尾节点）<br>          获取元素：返回队列头部元素</p>
-<!-- more -->
-<h1 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h1><p>阻塞插入：队列满，阻塞插入元素的线程，直到线程不满<br>阻塞移除：队列空，阻塞获取元素的线程，直到线程非空</p>
-<p><em>有毒感觉自己学着学着开始看KnowYouSelf&gt;&lt;!</em></p>
+        <h1 id="政采云"><a href="#政采云" class="headerlink" title="政采云"></a>政采云</h1><p>1.OSI七层模型<br>2.TCP和UDP的区别<br>3.http和https的区别<br>4.说一下数据结构<br>5.数组跟链表的区别</p>
+<p>政采云的面试官真的素质太棒了，我还被小小的煽情了下，与之形成鲜明的对比的某（广）某（联）某（达）的某某面试官！别看了，看就是要吐槽你！<br>总体而言这次一面的面试体验非常好，在我磕磕巴巴的阐述下，面试官突然来了句我也不想继续问下去了，听到这儿，我的心都凉了半截，<br>内心os:我也清楚我太菜了，面试官你也不需要这么直白的告诉我吧！！！随后，他对我说了句，他觉得跟我很不对等，我知道的他也未必知道。<br>我内心OS：我Giao！！！您这也太看得起我了，虽然我确实懂我方向的一部分内容，事实上您也确实不知道，但你怎么能这么煽情对我说出来了呢，我太菜了这就是反应在面试中的事实，您真的不必顾虑我的感受或者啥的。<br>总结下：很后悔没问他给我些啥建议！！！在我昨晚翻来覆去的回想他对我说的话的时候，我很后悔没有向他询问对我的建议。<br>总而言之，好好学习，提升自己技术水平，说不定还能再次遇到这位友好的面试官的！</p>
 
     </div>
 
@@ -329,13 +317,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/geil520.github.io/2020/08/26/Redis/" rel="prev" title="Redis">
-      <i class="fa fa-chevron-left"></i> Redis
+    <a href="/geil520.github.io/2020/09/10/java%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="prev" title="java基础语法">
+      <i class="fa fa-chevron-left"></i> java基础语法
     </a></div>
-      <div class="post-nav-item">
-    <a href="/geil520.github.io/2020/09/01/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%8A%80%E6%9C%AF/" rel="next" title="线程池技术">
-      线程池技术 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
